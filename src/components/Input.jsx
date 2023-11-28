@@ -24,7 +24,7 @@ function Input() {
     setTitle(event.target.value.trimStart());
   };
   const contentChangeHndlr = (event) => {
-    setContent(event.target.value);
+    setContent(event.target.value.trimStart());
   };
   const registerBtnHndlr = (e) => {
     e.preventDefault();
@@ -59,6 +59,7 @@ function Input() {
           autoComplete="off"
           id="content-input"
           placeholder="내용을 입력하세요"
+          required
         />
       </div>
 

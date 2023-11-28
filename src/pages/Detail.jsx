@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteTodo } from "../redux/modules/todos";
+import Swal from "sweetalert2";
 
 const Detail = () => {
   const todos = useSelector((state) => state.todos);
@@ -13,8 +14,20 @@ const Detail = () => {
   console.log(targetTodo);
   console.log(todos);
   const deleteBtnHndlr = () => {
-    dispatch(deleteTodo(todoId));
-    navigate("/");
+    Swal.fire({
+      title: "삭제하시겠습니까?",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: "삭제",
+      denyButtonText: `취소`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteTodo(todoId));
+        navigate("/");
+      } else if (result.isDenied) {
+        return;
+      }
+    });
   };
   return (
     <>

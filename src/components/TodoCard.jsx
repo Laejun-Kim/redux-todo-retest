@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { deleteTodo, switchTodo } from "../redux/modules/todos";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const StCardDiv = styled.div`
   width: 200px;
@@ -37,7 +38,19 @@ function TodoCard({ todo }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const deleteBtnHndlr = () => {
-    dispatch(deleteTodo(todo.id));
+    Swal.fire({
+      title: "삭제하시겠습니까?",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: "삭제",
+      denyButtonText: `취소`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteTodo(todo.id));
+      } else if (result.isDenied) {
+        return;
+      }
+    });
   };
   const toggleBtnHndlr = () => {
     dispatch(switchTodo(todo.id));
