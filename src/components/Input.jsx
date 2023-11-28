@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import shortid from "shortid";
 import { addTodo } from "../redux/modules/todos";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 const StInputForm = styled.form`
   height: 150px;
@@ -28,13 +29,25 @@ function Input() {
   };
   const registerBtnHndlr = (e) => {
     e.preventDefault();
-    const newTodo = {
-      id: shortid.generate(),
-      title,
-      contents: content,
-      isDone: false,
-    };
-    dispatch(addTodo(newTodo));
+    Swal.fire({
+      title: "신규 Todo를 등록할까요?",
+      icon: "info",
+      showDenyButton: true,
+      confirmButtonText: "등록",
+      denyButtonText: `취소`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newTodo = {
+          id: shortid.generate(),
+          title,
+          contents: content,
+          isDone: false,
+        };
+        dispatch(addTodo(newTodo));
+      } else if (result.isDenied) {
+        return;
+      }
+    });
   };
 
   return (
