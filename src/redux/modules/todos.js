@@ -1,4 +1,3 @@
-// import uuid from "react-uuid";
 import shortid from "shortid";
 
 const initialState = [
